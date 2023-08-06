@@ -22,7 +22,7 @@ codebert_pipeline = pipeline("feature-extraction", "microsoft/codebert-base")
 app = FastAPI()
 
 
-@app.get("/codebert-features")
+@app.get("/")
 def codebert_features(code_snippet: str) -> Dict[str, List[float]]:
     """
     Return CodeBERT features of an input code snippet.
