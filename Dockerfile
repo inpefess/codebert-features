@@ -20,5 +20,7 @@ ENV PATH=$HOME/.local/bin:$PATH
 COPY ./requirements.txt $HOME/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r $HOME/requirements.txt
 COPY --chown=user ./app/ $HOME/app/
+# get the model into cache
+RUN python $HOME/app/main.py
 WORKDIR $HOME
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
