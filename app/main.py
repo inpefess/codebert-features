@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 """FastAPI application serving CodeBERT featues."""
-from typing import Dict, List
+from typing import List
 
 import torch
 from fastapi import FastAPI
@@ -23,7 +23,7 @@ app = FastAPI()
 
 
 @app.get("/")
-def codebert_features(code_snippet: str) -> Dict[str, List[float]]:
+async def codebert_features(code_snippet: str) -> List[float]:
     """
     Return CodeBERT features of an input code snippet.
 
@@ -31,4 +31,4 @@ def codebert_features(code_snippet: str) -> Dict[str, List[float]]:
     :returns: a dict with one key (output) mapping to an embedding
     """
     features = torch.Tensor(codebert_pipeline(code_snippet)[0])
-    return {"output": features.mean(0).tolist()}
+    return features.mean(0).tolist()
