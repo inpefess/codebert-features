@@ -28,6 +28,7 @@ def main() -> None:
 data = {"code_snippet": CODE_SNIPPET}
 with urlopen(f"http://127.0.0.1:7860/?{urlencode(data)}") as response:
     embedding = response.read().decode("utf8")
+print(json.loads(embedding))
 ```
 
 # How to Build a New Version
