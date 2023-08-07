@@ -1,18 +1,10 @@
----
-title: CodeBERT Features
-sdk: docker
-license: apache-2.0
----
+# CodeBERT Features Docker Image
 
 Transforms a code snippet to a list of 768 floats by averaging the
 token embeddings from
 [CodeBERT](https://huggingface.co/microsoft/codebert-base).
 
-See an
-[example](https://huggingface.co/spaces/inpefess/codebert-features?code_snippet=print%28%22Hello%2C+world%21%22%29)
-running on Hugging Face.
-
-# Run Locally
+# How to Run
 
 Use [Docker](https://www.docker.com/get-started/) to pull the
 pre-built image and run it on your machine:
@@ -21,24 +13,24 @@ pre-built image and run it on your machine:
 docker run -it -p 7860:7860 inpefess/codebert-features
 ```
 
-Then access, for example, using the
-[requests](https://requests.readthedocs.io) library:
+Then access, for example, using standard Python libraries:
 
 ```python
 import json
-import requests
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
-code_snippet = """
-def square(x: int) -> int:
-    return x ** 2
+CODE_SNIPPET = """
+def main() -> None:
+    return
 
 """
-
-response = requests.get(f"http://localhost:7860?code_snippet={code_snippet}")
-embeddings = json.loads(response.content)["output"]
+data = {"code_snippet": CODE_SNIPPET}
+with urlopen(f"http://127.0.0.1:7860/?{urlencode(data)}") as response:
+    embedding = response.read().decode("utf8")
 ```
 
-# Build Locally
+# How to Build a New Version
 
 Feel free to modify the source code, build and run a new image:
 
