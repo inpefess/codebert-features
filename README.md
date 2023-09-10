@@ -7,11 +7,12 @@ token embeddings from
 # How to Run
 
 Use [Docker](https://www.docker.com/get-started/) to pull the
-pre-built image and run it on your machine (add ``--gpus all`` flag
-to use GPU):
+pre-built image and run it on your machine:
 
 ```sh
-docker run -it -p 7860:7860 inpefess/codebert-features
+docker run --name memcached -d --network memcached-network memcached
+# add ``--gpus all`` flag to use GPU
+docker run --name codebert-features -p 7860:7860 --network memcached-network -d inpefess/codebert-features
 ```
 
 Then access, for example, using standard Python libraries:
@@ -40,5 +41,4 @@ Feel free to modify the source code, build and run a new image:
 git clone https://github.com/inpefess/codebert-features
 cd codebert features
 docker build -t my-codebert-features .
-docker run -it -p 7860:7860 my-codebert-features
 ```

@@ -2,3 +2,4 @@ fastapi==0.103.*
 torch==2.0.*
 transformers==4.*
 uvicorn[standard]==0.23.*
+fastapi-cache2[memcache]==0.2.*
