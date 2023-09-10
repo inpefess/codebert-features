@@ -7,7 +7,8 @@ token embeddings from
 # How to Run
 
 Use [Docker](https://www.docker.com/get-started/) to pull the
-pre-built image and run it on your machine:
+pre-built image and run it on your machine (add ``--gpus all`` flag
+to use GPU):
 
 ```sh
 docker run -it -p 7860:7860 inpefess/codebert-features

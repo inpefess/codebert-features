@@ -18,7 +18,11 @@ import torch
 from fastapi import FastAPI
 from transformers import pipeline
 
-codebert_pipeline = pipeline("feature-extraction", "microsoft/codebert-base")
+codebert_pipeline = pipeline(
+    task="feature-extraction",
+    model="microsoft/codebert-base",
+    device="cuda" if torch.cuda.is_available() else "cpu",
+)
 app = FastAPI()
 
 
@@ -30,5 +34,5 @@ async def codebert_features(code_snippet: str) -> List[float]:
     :param code_snippet: an input code snippet
     :returns: a dict with one key (output) mapping to an embedding
     """
-    features = torch.Tensor(codebert_pipeline(code_snippet)[0])
+    features = torch.Tensor(codebert_pipeline(code_snippet)[0]).cpu()
     return features.mean(0).tolist()
