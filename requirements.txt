@@ -3,3 +3,4 @@ torch==2.0.*
 transformers==4.*
 uvicorn[standard]==0.23.*
 fastapi-cache2[memcache]==0.2.*
+prometheus-fastapi-instrumentator==6.1.*

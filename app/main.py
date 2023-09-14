@@ -21,6 +21,7 @@ from fastapi import FastAPI
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.memcached import MemcachedBackend
 from fastapi_cache.decorator import cache
+from prometheus_fastapi_instrumentator import Instrumentator
 from starlette.requests import Request
 from starlette.responses import Response
 from transformers import pipeline
@@ -31,7 +32,7 @@ codebert_pipeline = pipeline(
     device="cuda" if torch.cuda.is_available() else "cpu",
 )
 app = FastAPI()
-
+Instrumentator().instrument(app).expose(app)
 
 @app.on_event("startup")
 async def startup():
