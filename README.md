@@ -10,11 +10,11 @@ Use [Docker](https://www.docker.com/get-started/) to pull the
 pre-built image and run it on your machine:
 
 ```sh
-docker run --name memcached -d --network codebert-features memcached
+docker network create --driver bridge codebert-features
 # add ``--gpus all`` flag to use GPU
 docker run --name codebert-features -p 7860:7860 --network codebert-features -d inpefess/codebert-features
 # run this to collect Prometheus metrics
-docker run --name prometheus -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml --network codebert-features -d prom/prometheus 
+docker run --name prometheus -p 9090:9090 -v ./prometheus.yml:/etc/prometheus/prometheus.yml --network codebert-features -d prom/prometheus
 ```
 
 Then access, for example, using standard Python libraries:

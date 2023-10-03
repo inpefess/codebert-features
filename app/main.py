@@ -12,18 +12,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 """FastAPI application serving CodeBERT featues."""
-from hashlib import sha256
-from typing import List, Optional
+from typing import List
 
-import aiomcache
 import torch
 from fastapi import FastAPI
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.memcached import MemcachedBackend
-from fastapi_cache.decorator import cache
 from prometheus_fastapi_instrumentator import Instrumentator
-from starlette.requests import Request
-from starlette.responses import Response
 from transformers import pipeline
 
 codebert_pipeline = pipeline(
@@ -34,24 +27,8 @@ codebert_pipeline = pipeline(
 app = FastAPI()
 Instrumentator().instrument(app).expose(app)
 
-@app.on_event("startup")
-async def startup():
-    FastAPICache.init(MemcachedBackend(aiomcache.Client("memcached")))
-
-
-def my_key_builder(
-    func,
-    namespace: Optional[str] = "",
-    request: Request = None,
-    response: Response = None,
-    *args,
-    **kwargs,
-):
-    return sha256(request.query_params["code_snippet"].encode("utf8")).digest()
-
 
 @app.get("/")
-@cache(expire=3600, key_builder=my_key_builder)
 async def codebert_features(code_snippet: str) -> List[float]:
     """
     Return CodeBERT features of an input code snippet.
